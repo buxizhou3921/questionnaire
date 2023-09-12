@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.dao.RecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.demo.dao.entity.Record">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="projectId" column="project_id" jdbcType="VARCHAR"/>
+            <result property="respondent" column="respondent" jdbcType="VARCHAR"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="answerTime" column="answer_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,project_id,respondent,
+        content,answer_time
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultType="com.demo.dao.entity.Record">
+        select
+        *
+        from record
+        where  id = #{id,jdbcType=VARCHAR} 
+    </select>
+    <select id="getRecordListByProjectId" resultType="com.demo.dao.entity.Record">
+        select
+        *
+        from record
+        where  project_id = #{project_id,jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete from record
+        where  id = #{id,jdbcType=VARCHAR} 
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.demo.dao.entity.Record" useGeneratedKeys="true">
+        insert into record
+        ( id,project_id,respondent
+        ,content,answer_time,questionnaire_name)
+        values (#{id,jdbcType=VARCHAR},#{projectId,jdbcType=VARCHAR},#{respondent,jdbcType=VARCHAR}
+        ,#{content,jdbcType=VARCHAR},#{answerTime,jdbcType=TIMESTAMP},#{questionnaireName})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.demo.dao.entity.Record" useGeneratedKeys="true">
+        insert into record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">id,</if>
+                <if test="projectId != null">project_id,</if>
+                <if test="respondent != null">respondent,</if>
+                <if test="content != null">content,</if>
+                <if test="answerTime != null">answer_time,</if>
+                <if test="questionnaireName != null">questionnaire_name,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id,jdbcType=VARCHAR},</if>
+                <if test="projectId != null">#{projectId,jdbcType=VARCHAR},</if>
+                <if test="respondent != null">#{respondent,jdbcType=VARCHAR},</if>
+                <if test="content != null">#{content,jdbcType=VARCHAR},</if>
+                <if test="answerTime != null">#{answerTime,jdbcType=TIMESTAMP},</if>
+                <if test="questionnaireName != null">#{questionnaireName,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.demo.dao.entity.Record">
+        update record
+        <set>
+                <if test="projectId != null">
+                    project_id = #{projectId,jdbcType=VARCHAR},
+                </if>
+                <if test="respondent != null">
+                    respondent = #{respondent,jdbcType=VARCHAR},
+                </if>
+                <if test="content != null">
+                    content = #{content,jdbcType=VARCHAR},
+                </if>
+                <if test="answerTime != null">
+                    answer_time = #{answerTime,jdbcType=TIMESTAMP},
+                </if>
+        </set>
+        where   id = #{id,jdbcType=VARCHAR} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.demo.dao.entity.Record">
+        update record
+        set 
+            project_id =  #{projectId,jdbcType=VARCHAR},
+            respondent =  #{respondent,jdbcType=VARCHAR},
+            content =  #{content,jdbcType=VARCHAR},
+            answer_time =  #{answerTime,jdbcType=TIMESTAMP}
+        where   id = #{id,jdbcType=VARCHAR} 
+    </update>
+</mapper>

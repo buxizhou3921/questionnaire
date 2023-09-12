@@ -1,0 +1,96 @@
+.custom-table {
+    border-collapse: collapse;
+    border: 1px solid #dedede;
+    margin-bottom: 20px;
+}
+.custom-table th,
+.custom-table td{
+    vertical-align: middle; /* 设置表格内元素垂直居中对齐 */
+}
+.custom-table th:first-child,
+.custom-table td:first-child {
+    width: 563px; /* 设置第一列的固定宽度为100像素 */
+}
+
+.custom-table th:nth-child(2),
+.custom-table td:nth-child(2) {
+    width: 100px; /* 设置第二列的固定宽度为200像素 */
+}
+
+.custom-table th:nth-child(3),
+.custom-table td:nth-child(3) {
+    width: 563px; /* 设置第三列的固定宽度为200像素 */
+}
+
+/*饼状图样例*/
+.chart-container{
+    width: 400px;
+    height: 300px;
+}
+
+.container {
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 40px !important;
+}
+
+.percentage {
+    margin-left: 15px;
+}
+
+.question-title {
+    font-family: 'CustomFont', Arial, sans-serif;
+    font-size: 17px;
+    font-weight: bold; /* 设置加粗字体 */
+    margin-bottom: 10px;
+}
+
+.question-text {
+    font-family: 'CustomFont', Arial, sans-serif;
+    font-size: 17px;
+}
+
+.question {
+    padding: 8px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.question-item{
+    margin-bottom: 60px;
+}
+
+.question-title-inline{
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn{
+    font-family: 'CustomFont', Arial, sans-serif;
+    font-size: 17px;
+}
+
+.questionnaire-title {
+    text-align: center;
+    margin-bottom: 40px; /* 设置底边距为40像素 */
+}
+
+.btn-group .btn {
+    background-color: #ffffff;
+    border: 1px solid #c9c9c9;
+    color: #8a9398;
+    box-shadow: 0 2px 4px rgba(154, 154, 154, 0.1);
+}
+
+.btn-group .btn.active-btn {
+    color: #007bff;
+}
+
+.btn-group .btn.active-btn i {
+    color: #007bff;
+}
+
+.fixed-height-container {
+    height: 320px; /* 设置容器的固定高度为 300 像素 */
+    /* 其他样式属性 */
+}

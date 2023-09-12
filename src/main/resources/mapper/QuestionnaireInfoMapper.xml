@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.dao.QuestionnaireInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.demo.dao.entity.QuestionnaireInfo">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="projectId" column="project_id" jdbcType="VARCHAR"/>
+            <result property="questionnaireName" column="questionnaire_name" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+            <result property="type" column="type" jdbcType="VARCHAR"/>
+            <result property="startTime" column="start_time" jdbcType="TIMESTAMP"/>
+            <result property="stopTime" column="stop_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,project_id,questionnaire_name,
+        description,type,start_time,
+        stop_time
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        *
+        from questionnaire_info
+        where  id = #{id,jdbcType=VARCHAR} and is_del = 0
+    </select>
+    <select id="selectQuestionnaireListByProjectId" resultType="com.demo.dao.entity.QuestionnaireInfo">
+        select * from questionnaire_info where project_id = #{project_id} and is_del = 0
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        update questionnaire_info
+        set is_del = 1
+        where  id = #{id,jdbcType=VARCHAR} 
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.demo.dao.entity.QuestionnaireInfo" useGeneratedKeys="true">
+        insert into questionnaire_info
+        ( id,project_id,questionnaire_name
+        ,description,type,start_time
+        ,stop_time)
+        values (#{id,jdbcType=VARCHAR},#{projectId,jdbcType=VARCHAR},#{questionnaireName,jdbcType=VARCHAR}
+        ,#{description,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},#{startTime,jdbcType=TIMESTAMP}
+        ,#{stopTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.demo.dao.entity.QuestionnaireInfo" useGeneratedKeys="true">
+        insert into questionnaire_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">id,</if>
+                <if test="projectId != null">project_id,</if>
+                <if test="questionnaireName != null">questionnaire_name,</if>
+                <if test="description != null">description,</if>
+                <if test="type != null">type,</if>
+                <if test="startTime != null">start_time,</if>
+                <if test="stopTime != null">stop_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id,jdbcType=VARCHAR},</if>
+                <if test="projectId != null">#{projectId,jdbcType=VARCHAR},</if>
+                <if test="questionnaireName != null">#{questionnaireName,jdbcType=VARCHAR},</if>
+                <if test="description != null">#{description,jdbcType=VARCHAR},</if>
+                <if test="type != null">#{type,jdbcType=VARCHAR},</if>
+                <if test="startTime != null">#{startTime,jdbcType=TIMESTAMP},</if>
+                <if test="stopTime != null">#{stopTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.demo.dao.entity.QuestionnaireInfo">
+        update questionnaire_info
+        <set>
+                <if test="projectId != null">
+                    project_id = #{projectId,jdbcType=VARCHAR},
+                </if>
+                <if test="questionnaireName != null">
+                    questionnaire_name = #{questionnaireName,jdbcType=VARCHAR},
+                </if>
+                <if test="description != null">
+                    description = #{description,jdbcType=VARCHAR},
+                </if>
+                <if test="type != null">
+                    type = #{type,jdbcType=VARCHAR},
+                </if>
+                <if test="startTime != null">
+                    start_time = #{startTime,jdbcType=TIMESTAMP},
+                </if>
+                <if test="stopTime != null">
+                    stop_time = #{stopTime,jdbcType=TIMESTAMP},
+                </if>
+        </set>
+        where   id = #{id,jdbcType=VARCHAR} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.demo.dao.entity.QuestionnaireInfo">
+        update questionnaire_info
+        set
+            project_id =  #{projectId,jdbcType=VARCHAR},
+            questionnaire_name =  #{questionnaireName,jdbcType=VARCHAR},
+            description =  #{description,jdbcType=VARCHAR},
+            type =  #{type,jdbcType=VARCHAR},
+            start_time =  #{startTime,jdbcType=TIMESTAMP},
+            stop_time =  #{stopTime,jdbcType=TIMESTAMP}
+        where   id = #{id,jdbcType=VARCHAR} 
+    </update>
+</mapper>

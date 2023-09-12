@@ -1,0 +1,38 @@
+server:
+  port: 8086
+
+mybatis:
+  type-aliases-package: com.demo.dao.entity
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    cache-enabled: true #开启二级缓存
+    map-underscore-to-camel-case: true #开启驼峰下划线转换
+    lazy-loading-enabled: true #开启懒加载
+    aggressive-lazy-loading: false #关闭按需加载
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #开启控制台打印sql
+
+#开启mp日志
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #驼峰命名
+  global-config:
+    banner: false
+    db-config:
+      id-type: input #设置id自增策略为用户自己输入
+      logic-delete-field: deleted
+      logic-delete-value: true
+      logic-not-delete-value: false
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/myweb?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8
+    username: root
+    password: wfz20030104
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+
+
+
+
+

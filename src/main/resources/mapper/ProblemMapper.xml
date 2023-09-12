@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.dao.ProblemMapper">
+
+    <resultMap id="BaseResultMap" type="com.demo.dao.entity.Problem">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="problemName" column="problem_name" jdbcType="VARCHAR"/>
+            <result property="mustAnswer" column="must_answer" jdbcType="TINYINT"/>
+            <result property="questionnaireId" column="questionnaire_id"/>
+    </resultMap>
+
+    <resultMap id="ProblemMap" type="com.demo.dao.entity.Problem">
+        <id property="id" column="id" jdbcType="VARCHAR"/>
+        <result property="problemName" column="problem_name" jdbcType="VARCHAR"/>
+        <result property="mustAnswer" column="must_answer" jdbcType="TINYINT"/>
+        <result property="questionnaireId" column="questionnaire_id"/>
+        <collection property="option" column="id" select="com.demo.dao.OptionMapper.selectByProblemId"/>
+    </resultMap>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ProblemMap">
+        select
+            id,questionnaire_id,problem_name,must_answer,problem_type,left_title
+        from problem
+        where  id = #{id,jdbcType=VARCHAR} 
+    </select>
+
+    <select id="selectByProjectById" parameterType="java.lang.String" resultMap="ProblemMap">
+        select id,questionnaire_id,problem_name,must_answer,problem_type,left_title
+        from problem
+        where  questionnaire_id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectChoiceById" parameterType="java.lang.String" resultMap="ProblemMap">
+        SELECT id, questionnaire_id, problem_name, must_answer, problem_type, left_title
+        FROM problem
+        WHERE questionnaire_id = #{id,jdbcType=VARCHAR} AND problem_type IN (1, 2)
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from problem
+        where  id = #{id,jdbcType=VARCHAR} 
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.demo.dao.entity.Problem" useGeneratedKeys="true">
+        insert into problem
+        ( id,problem_name,must_answer,questionnaire_id,problem_type,left_title
+        )
+        values (#{id,jdbcType=VARCHAR},#{problemName,jdbcType=VARCHAR},#{mustAnswer,jdbcType=TINYINT},#{questionnaireId},#{problemType},#{leftTitle}
+        )
+    </insert>
+<!--    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.example.ques.domain.Problem" useGeneratedKeys="true">-->
+<!--        insert into problem-->
+<!--        <trim prefix="(" suffix=")" suffixOverrides=",">-->
+<!--                <if test="id != null">id,</if>-->
+<!--                <if test="problemName != null">problem_name,</if>-->
+<!--                <if test="mustAnswer != null">must_answer,</if>-->
+<!--        </trim>-->
+<!--        <trim prefix="values (" suffix=")" suffixOverrides=",">-->
+<!--                <if test="id != null">#{id,jdbcType=VARCHAR},</if>-->
+<!--                <if test="problemName != null">#{problemName,jdbcType=VARCHAR},</if>-->
+<!--                <if test="mustAnswer != null">#{mustAnswer,jdbcType=TINYINT},</if>-->
+<!--        </trim>-->
+<!--    </insert>-->
+    <update id="updateByPrimaryKeySelective" parameterType="com.demo.dao.entity.Problem">
+        update problem
+        <set>
+                <if test="problemName != null">
+                    problem_name = #{problemName,jdbcType=VARCHAR},
+                </if>
+                <if test="mustAnswer != null">
+                    must_answer = #{mustAnswer,jdbcType=TINYINT},
+                </if>
+            <if test="questionnaireId != null">
+                questionnaire_id = #{questionnaireId},
+            </if>
+            <if test="problemType != null">
+                problem_type = #{problemType},
+            </if>
+        </set>
+        where   id = #{id,jdbcType=VARCHAR} 
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.demo.dao.entity.Problem">
+        update problem
+        set 
+            problem_name =  #{problemName,jdbcType=VARCHAR},
+            must_answer =  #{mustAnswer,jdbcType=TINYINT},
+            questionnaire_id = #{questionnaireId},
+            problem_type = #{problemType}
+        where   id = #{id,jdbcType=VARCHAR}
+    </update>
+</mapper>

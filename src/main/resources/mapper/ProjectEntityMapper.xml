@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.dao.ProjectEntityMapper">
+
+  <sql id="Base_Column_List">
+    id, user_id, project_name, project_content, created_by, creation_date,
+    last_updated_by, last_update_date
+  </sql>
+  <!--查询项目信息-->
+  <select id="queryProjectList" resultType="com.demo.dao.entity.ProjectEntity">
+    SELECT * FROM project_info
+    <where>
+      <if test="projectName != null and projectName != ''">
+        project_name like concat('%', #{projectName}, '%')
+      </if>
+      <if test="id != null and id != ''">
+        and id = #{id,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </select>
+  <!--项目名重复验证-->
+  <select id="queryProjectListByName" resultType="java.lang.Integer">
+    SELECT COUNT(*)
+    FROM project_info
+    WHERE project_name = #{projectName,jdbcType=VARCHAR}
+  </select>
+  <!--插入项目-->
+  <insert id="insert" parameterType="com.demo.dao.entity.ProjectEntity">
+    insert into project_info (<include refid="Base_Column_List" />)
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{projectName,jdbcType=VARCHAR},
+            #{projectContent,jdbcType=LONGVARCHAR}, "admin", #{creationDate,jdbcType=TIMESTAMP},
+            #{lastUpdatedBy,jdbcType=CHAR}, #{lastUpdateDate,jdbcType=TIMESTAMP})
+  </insert>
+  <!--根据id删除项目-->
+  <delete id="deleteProjectById" parameterType="com.demo.dao.entity.ProjectEntity">
+    delete from project_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+  <!--修改项目-->
+  <update id="updateByPrimaryKeySelective" parameterType="com.demo.dao.entity.ProjectEntity">
+    update project_info
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null">
+        project_name = #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectContent != null">
+        project_content = #{projectContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="createdBy != null">
+        created_by = #{createdBy,jdbcType=CHAR},
+      </if>
+      <if test="creationDate != null">
+        creation_date = #{creationDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastUpdatedBy != null">
+        last_updated_by = #{lastUpdatedBy,jdbcType=CHAR},
+      </if>
+      <if test="lastUpdateDate != null">
+        last_update_date = #{lastUpdateDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

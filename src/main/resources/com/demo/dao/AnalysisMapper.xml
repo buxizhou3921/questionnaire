@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.demo.dao.AnalysisMapper">
+
+    <select id="analysisByQuestionId" resultType="com.demo.beans.AnalysisOption">
+        SELECT id, total, CONCAT(FORMAT((total / total_sum) * 100, 2), '%') AS percentage
+        FROM (
+                 SELECT option_id AS id, COUNT(*) AS total, (SELECT COUNT(*) FROM analysis WHERE problem_id  = #{id}) AS total_sum
+                 FROM analysis
+                 WHERE problem_id  = #{id}
+                 GROUP BY option_id
+             ) AS subquery;
+    </select>
+
+    <select id="analysisByQuestionName" resultType="com.demo.beans.AnalysisOption">
+
+        SELECT id, total, CONCAT(FORMAT((total / total_sum) * 100, 2), '%') AS percentage
+        FROM (
+                 SELECT option_id AS id, COUNT(*) AS total, (SELECT COUNT(*) FROM analysis as R WHERE R.problem_content = #{name} and R.project_id = #{projectId}) AS total_sum
+                 FROM analysis as R
+                 WHERE R.problem_content = #{name} and R.project_id = #{projectId}
+                 GROUP BY option_id
+             ) AS subquery;
+    </select>
+
+
+</mapper>
